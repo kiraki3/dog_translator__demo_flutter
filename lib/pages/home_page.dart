@@ -64,10 +64,6 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      // child: Text(
-      //     'Hello, Flutter!',
-      //     style: TextStyle(fontSize: 24),
-      //   ),
     );
   }
 }

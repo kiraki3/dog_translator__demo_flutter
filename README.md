@@ -1,4 +1,4 @@
-# dog_translator__demo_flutter
+# dog_translator_demo_flutter
 
 A new Flutter project.
 

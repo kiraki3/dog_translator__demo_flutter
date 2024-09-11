@@ -1,4 +1,4 @@
-import 'package:dog_translator__demo_flutter/pages/pages.dart';
+import 'package:dog_translator_demo_flutter/pages/pages.dart';
 import 'package:flutter/material.dart';
 
 void main() {

@@ -1,6 +1,6 @@
 {
-    "name": "dog_translator__demo_flutter",
-    "short_name": "dog_translator__demo_flutter",
+    "name": "dog_translator_demo_flutter",
+    "short_name": "dog_translator_demo_flutter",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
