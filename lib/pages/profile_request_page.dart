@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class HomePage extends ConsumerWidget {
-  static HomePage builder(BuildContext context, GoRouterState state) =>
-      const HomePage();
-  const HomePage({super.key});
+class ProfileRequestPage extends ConsumerWidget {
+  static ProfileRequestPage builder(
+          BuildContext context, GoRouterState state) =>
+      const ProfileRequestPage();
+  const ProfileRequestPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -15,7 +16,7 @@ class HomePage extends ConsumerWidget {
         title: const Padding(
           padding: EdgeInsets.only(bottom: 5.0),
           child: Text(
-            '강아지 번역기',
+            '강아지 프로필 등록하기',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w500,
@@ -35,17 +36,17 @@ class HomePage extends ConsumerWidget {
             ),
             const SizedBox(height: 10),
             const Text(
-              '안녕하세요. \n 강아지 번역기 입니다.',
+              '정확도를 높이기 위해서는 \n 우리집 강아지를 소개해주세요.',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
             ),
-            const SizedBox(height: 40),
+            const SizedBox(height: 50),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const ProfileRequestPage(),
+                    builder: (context) => const ProfileRegisterPage(),
                   ),
                 );
               },
@@ -60,7 +61,7 @@ class HomePage extends ConsumerWidget {
                 fixedSize: const Size(150, 50),
               ),
               child: const Text(
-                '시작하기',
+                '프로필 입력하기',
                 style: TextStyle(
                   fontSize: 15,
                 ),
