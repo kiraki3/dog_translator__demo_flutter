@@ -23,7 +23,7 @@ class HomePage extends ConsumerWidget {
           ),
         ),
         centerTitle: true,
-        backgroundColor: Colors.green,
+        backgroundColor: const Color.fromARGB(255, 101, 174, 243),
       ),
       body: Center(
         child: Column(

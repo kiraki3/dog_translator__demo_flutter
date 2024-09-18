@@ -1,19 +1,74 @@
 import 'dart:io';
 import 'dart:math';
-
+import 'package:audioplayers/audioplayers.dart';
 import 'package:dog_translator_demo_flutter/pages/pages.dart';
+import 'package:dog_translator_demo_flutter/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class AnalysisResultPage extends StatefulWidget {
   final File? image;
+  final String puppyName;
+  final String selectedBreed;
+  final String audioFilePath;
 
-  const AnalysisResultPage({super.key, this.image});
+  const AnalysisResultPage({
+    super.key,
+    this.image,
+    required this.puppyName,
+    required this.selectedBreed,
+    required this.audioFilePath,
+  });
 
   @override
   State<AnalysisResultPage> createState() => _AnalysisResultPageState();
 }
 
 class _AnalysisResultPageState extends State<AnalysisResultPage> {
+  final AudioPlayer _audioPlayer = AudioPlayer();
+  bool isPlaying = false;
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+    super.dispose();
+  }
+
+  Future<void> startPlaying() async {
+    File audioFile = File(widget.audioFilePath);
+
+    if (await audioFile.exists()) {
+      await _audioPlayer.play(DeviceFileSource(audioFile.path));
+      if (mounted) {
+        // 위젯이 화면에 여전히 있는지 확인
+        setState(() {
+          isPlaying = true;
+        });
+      }
+      _audioPlayer.onPlayerComplete.listen((event) {
+        if (mounted) {
+          // 위젯이 화면에 여전히 있는지 확인
+          setState(() {
+            isPlaying = false;
+          });
+        }
+      });
+    } else {
+      if (mounted) {
+        // 위젯이 화면에 여전히 있는지 확인
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('오디오 파일이 존재하지 않습니다.')),
+        );
+      }
+    }
+  }
+
+  Future<void> stopPlaying() async {
+    await _audioPlayer.stop();
+    setState(() {
+      isPlaying = false;
+    });
+  }
+
   // 메시지 리스트
   final List<String> messages = [
     "와, 당신은 정말 대단해요!",
@@ -53,18 +108,18 @@ class _AnalysisResultPageState extends State<AnalysisResultPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Padding(
-          padding: EdgeInsets.only(bottom: 5.0),
+        title: Padding(
+          padding: const EdgeInsets.only(bottom: 5.0),
           child: Text(
-            '분석결과 확인',
-            style: TextStyle(
+            '${widget.puppyName}의 목소리 분석결과',
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w500,
             ),
           ),
         ),
         centerTitle: true,
-        backgroundColor: Colors.green,
+        backgroundColor: const Color.fromARGB(255, 101, 174, 243),
       ), // 앱 바에 제목을 설정
       body: Center(
         child: Column(
@@ -79,40 +134,43 @@ class _AnalysisResultPageState extends State<AnalysisResultPage> {
                     widget.image!, width: 200, // 기본 이미지의 크기 설정
                     height: 200,
                   ), // 전달받은 이미지
-            const SizedBox(height: 20),
+            const SizedBox(height: 25),
             IconButton(
-              onPressed: () {},
-              icon: const ImageIcon(
-                AssetImage('assets/playbutton.png'),
-                size: 100.0, // 아이콘 크기 조정
-                color: Colors.black, // 아이콘 색상 설정
+              icon: Image.asset(
+                isPlaying ? 'assets/pausebutton.png' : 'assets/playbutton.png',
+                width: 60,
+                height: 60,
+              ),
+              onPressed: isPlaying ? stopPlaying : startPlaying,
+            ),
+            const SizedBox(height: 25),
+            const Text(
+              '목소리를 분석해본 결과, \n 당신의 강아지는 다음과 같은 말을 하고 있어요!',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 14,
               ),
             ),
-            const SizedBox(height: 30),
-            const Text(
-              '분석 결과',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-            ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 25),
             Text(
               randomMessage,
               style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  color: Color.fromARGB(255, 6, 40, 133)),
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                backgroundColor: Colors.yellow,
+              ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 30),
-
-            const SizedBox(height: 30),
+            const SizedBox(height: 50),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const RecordingPage(
-                      puppyName: '',
-                      selectedBreed: '',
+                    builder: (context) => RecordingPage(
+                      image: widget.image,
+                      puppyName: widget.puppyName,
+                      selectedBreed: widget.selectedBreed,
                     ),
                   ),
                 );
@@ -134,8 +192,8 @@ class _AnalysisResultPageState extends State<AnalysisResultPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 30),
-            ElevatedButton(
+            const SizedBox(height: 24),
+            CustomElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
@@ -144,22 +202,7 @@ class _AnalysisResultPageState extends State<AnalysisResultPage> {
                   ),
                 );
               },
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.blue, // 버튼 배경색 설정
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20, vertical: 12), // 패딩 설정
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30), // 버튼 모서리 둥글기 설정
-                ),
-                fixedSize: const Size(150, 50),
-              ),
-              child: const Text(
-                '홈으로',
-                style: TextStyle(
-                  fontSize: 15,
-                ),
-              ),
+              text: '홈으로',
             ),
           ],
         ),

@@ -81,17 +81,12 @@ class _ProfileRegisterPageState extends State<ProfileRegisterPage> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: Colors.green,
-      ), // 앱 바에 제목을 설정
+        backgroundColor: const Color.fromARGB(255, 101, 174, 243),
+      ),
       body: Container(
         padding: const EdgeInsets.all(24.0), // Padding과 동일한 역할
         child: Column(
           children: <Widget>[
-            // const Text(
-            //   '강아지 사진 등록',
-            //   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-            // ),
-            // const SizedBox(height: 20),
             _image == null
                 ? Image.asset(
                     'assets/puppy_logo.jpg',

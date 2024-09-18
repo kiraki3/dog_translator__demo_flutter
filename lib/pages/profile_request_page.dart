@@ -1,4 +1,5 @@
 import 'package:dog_translator_demo_flutter/pages/pages.dart';
+import 'package:dog_translator_demo_flutter/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -24,7 +25,7 @@ class ProfileRequestPage extends ConsumerWidget {
           ),
         ),
         centerTitle: true,
-        backgroundColor: Colors.green,
+        backgroundColor: const Color.fromARGB(255, 101, 174, 243),
       ),
       body: Center(
         child: Column(
@@ -41,7 +42,7 @@ class ProfileRequestPage extends ConsumerWidget {
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
             ),
             const SizedBox(height: 50),
-            ElevatedButton(
+            CustomElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
@@ -50,22 +51,7 @@ class ProfileRequestPage extends ConsumerWidget {
                   ),
                 );
               },
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.blue, // 버튼 배경색 설정
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20, vertical: 12), // 패딩 설정
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30), // 버튼 모서리 둥글기 설정
-                ),
-                fixedSize: const Size(150, 50),
-              ),
-              child: const Text(
-                '프로필 입력하기',
-                style: TextStyle(
-                  fontSize: 15,
-                ),
-              ),
+              text: '프로필 입력하기',
             ),
           ],
         ),
